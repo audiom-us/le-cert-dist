@@ -1,0 +1,13 @@
+---
+- name: Distribute the cert and key
+
+  hosts: cert_dist
+
+  become: yes
+  become_method: sudo
+
+  vars_files:
+    - /home/ansible/lab/secrets/become-pw
+
+  roles:
+    - cert_dist

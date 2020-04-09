@@ -1,0 +1,6 @@
+- include: dist.yml
+  with_items:
+    - "domain1.com"
+    - "domain2.com"
+  loop_control:
+    loop_var: domain

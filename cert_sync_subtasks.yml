@@ -1,0 +1,34 @@
+- name: Loosen permissions on cert dir to allow writing
+  file:
+    path: "/etc/pki/tls/{{ domain }}"
+    owner: ansible
+    group: root
+    mode: 0770
+    recurse: yes
+  delegate_to: localhost
+
+- name: Copy fullchain.pem and privkey.pem to localhost
+  fetch:
+    src: "/etc/letsencrypt/live/{{ domain }}/{{ item }}"
+    dest: "/etc/pki/tls/{{ domain }}/"
+    flat: yes
+  with_items:
+    - fullchain.pem
+    - privkey.pem
+
+- name: Setting permissions on cert and key
+  file:
+    path: "/etc/pki/tls/{{ domain }}"
+    owner: ansible
+    group: root
+    mode: 0440
+    recurse: yes
+  delegate_to: localhost
+
+- name: Restrict permissions on cert dir
+  file:
+    path: "/etc/pki/tls/{{ domain }}"
+    owner: ansible
+    group: root
+    mode: 0550
+  delegate_to: localhost
